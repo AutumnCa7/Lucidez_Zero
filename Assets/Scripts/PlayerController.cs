@@ -2,16 +2,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Movimiento (WASD y Shift)")]
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float runSpeed = 12f;
-    
+
     [Header("Salto")]
-    [SerializeField] private float jumpForce = 6f; 
-    [SerializeField] private float groundCheckDistance = 1.1f; 
+    [SerializeField] private float jumpForce = 6f;
+    [SerializeField] private float groundCheckDistance = 1.1f;
     private bool isGrounded;
 
     private Rigidbody rb;
@@ -31,20 +32,25 @@ public class PlayerController : MonoBehaviour
 
     [Header("Sistema de Cordura")]
     [SerializeField] private float corduraMaxima = 100f;
-    [SerializeField] private float velocidadDrenado = 3f; 
-    [SerializeField] private Slider uiBarraCordura; 
-    [SerializeField] private Image uiImagenRelleno; 
+    [SerializeField] private float velocidadDrenado = 3f;
+    [SerializeField] private Slider uiBarraCordura;
+    [SerializeField] private Image uiImagenRelleno;
     [SerializeField] private Color colorSaludable = Color.green;
     [SerializeField] private Color colorCritico = Color.red;
-    [Range(0f, 1f)] [SerializeField] private float umbralPanico = 0.2f; 
+    [Range(0f, 1f)][SerializeField] private float umbralPanico = 0.2f;
 
     private float corduraActual;
-    private bool enZonaSegura = false; 
+    private bool enZonaSegura = false;
 
     [Header("Efecto de Oscuridad (Vignette)")]
-    [SerializeField] private Volume volumePostProcesado; 
-    [SerializeField] private float intensidadMaximaVignette = 0.6f; 
-    private Vignette vignetteEffect; // ¡De vuelta tu variable original!
+    [SerializeField] private Volume volumePostProcesado;
+    [SerializeField] private float intensidadMaximaVignette = 0.6f;
+    private Vignette vignetteEffect;
+
+    [Header("Game Over")]
+    private bool juegoTerminado = false;
+    private bool puedeControlar = true;
+    [SerializeField] private GameUIManager gameUI;
 
     void Start()
     {
@@ -59,7 +65,6 @@ public class PlayerController : MonoBehaviour
             if (uiImagenRelleno != null) uiImagenRelleno.color = colorSaludable;
         }
 
-        // --- TU CÓDIGO ORIGINAL QUE SÍ FUNCIONABA ---
         if (volumePostProcesado != null && volumePostProcesado.profile.TryGet(out vignetteEffect))
         {
             vignetteEffect.intensity.value = 0f;
@@ -75,6 +80,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!puedeControlar) return;
+
         if (!enZonaSegura)
         {
             PerderCordura(velocidadDrenado * Time.deltaTime);
@@ -101,7 +108,7 @@ public class PlayerController : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); 
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         // --- CÁLCULO DE CAÍDA DE CABEZA ---
         CalcularInclinacionCabeza();
@@ -120,27 +127,30 @@ public class PlayerController : MonoBehaviour
 
     public void PerderCordura(float cantidad)
     {
+        if (juegoTerminado) return;
+
         corduraActual -= cantidad;
         ActualizarUI();
 
         if (corduraActual <= 0)
         {
             corduraActual = 0;
-            Debug.Log("Cordura a cero: Has enloquecido (Game Over)");
+            juegoTerminado = true;
+            DesactivarControles();
+            gameUI.MostrarGameOver();
         }
     }
 
     private void ActualizarUI()
     {
         if (uiBarraCordura == null || uiImagenRelleno == null) return;
-        
+
         uiBarraCordura.value = corduraActual;
-        float porcentaje = corduraActual / corduraMaxima; 
-        
+        float porcentaje = corduraActual / corduraMaxima;
+
         Color colorActual = Color.Lerp(colorCritico, colorSaludable, porcentaje);
         uiImagenRelleno.color = colorActual;
-        
-        // --- TU LÓGICA DE INTENSIDAD ---
+
         if (vignetteEffect != null)
         {
             float nuevaIntensidad = Mathf.Lerp(0f, intensidadMaximaVignette, 1f - porcentaje);
@@ -149,8 +159,8 @@ public class PlayerController : MonoBehaviour
 
         if (porcentaje <= umbralPanico)
         {
-            float parpadeo = Mathf.Sin(Time.time * 20f); 
-            if (parpadeo > 0) uiImagenRelleno.color = Color.white; 
+            float parpadeo = Mathf.Sin(Time.time * 20f);
+            if (parpadeo > 0) uiImagenRelleno.color = Color.white;
         }
     }
 
@@ -161,7 +171,7 @@ public class PlayerController : MonoBehaviour
         // Si la locura pasa de la mitad, empieza a caer la cabeza
         if (porcentajeLocura > 0.5f)
         {
-            float intensidad = (porcentajeLocura - 0.5f) * 2f; 
+            float intensidad = (porcentajeLocura - 0.5f) * 2f;
             inclinacionActualZ = Mathf.Sin(Time.time * velocidadCaidaCabeza) * (anguloMaximoMareo * intensidad);
         }
         else
@@ -178,5 +188,10 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("LuzSegura")) enZonaSegura = false;
+    }
+
+    public void DesactivarControles()
+    {
+        puedeControlar = false;
     }
 }
