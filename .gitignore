@@ -73,6 +73,10 @@ mono_crash.*
 *.unitypackage.meta
 *.app
 
+# Custom local builds / configs (no subir)
+Build_Prueba/
+.vsconfig
+
 # Crashlytics generated file
 crashlytics-build.properties
 
