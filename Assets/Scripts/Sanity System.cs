@@ -24,7 +24,7 @@ public class SanitySystem : MonoBehaviour
    
     void Update()
     {
-        if (enZonaSegura)return;
+        if (enZonaSegura) return;
         if (!enZonaSegura)
         {
             ModifySanity(-velocidadDrenado * Time.deltaTime);
@@ -42,7 +42,7 @@ public class SanitySystem : MonoBehaviour
             OnSanityReduced?.Invoke();
         }
     }
-
-   public void SetZonaSegura (bool value)
+    
+    public void SetZonaSegura (bool value)
     { enZonaSegura = value; }
 }

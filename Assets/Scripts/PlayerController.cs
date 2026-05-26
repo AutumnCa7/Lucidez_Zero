@@ -55,8 +55,8 @@ public class PlayerController : MonoBehaviour
 
         //perderCordura fue reemplazado por la clase SanitySystem para un manejo mas escalable de la mecanica a partir de Eventos
 
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
         isRunning = Input.GetKey(KeyCode.LeftShift);
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance);
@@ -116,16 +116,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        sanitySystem.SetZonaSegura(true);
-
+        if (other.CompareTag("SafeZone"))
+        {
+            sanitySystem.SetZonaSegura(true);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        sanitySystem.SetZonaSegura(false);
-
+        if (other.CompareTag("SafeZone"))
+        {
+            sanitySystem.SetZonaSegura(false);
+        }
     }
 
     public void DesactivarControles()
