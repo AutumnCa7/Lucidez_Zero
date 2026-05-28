@@ -1592,6 +1592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SanitySystem
   corduraMaxima: 100
   velocidadDrenado: 3
+  flashlightSystem: {fileID: 303139713}
 --- !u!1001 &69245616
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6723,11 +6724,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 434417b606fbffd4da5311a70a4dd1da, type: 3}
---- !u!4 &283030644 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 456052, guid: 434417b606fbffd4da5311a70a4dd1da, type: 3}
-  m_PrefabInstance: {fileID: 283030643}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &286605422
 GameObject:
   m_ObjectHideFlags: 0
@@ -42607,6 +42603,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4333600701726426, guid: e088750ece8e53b4187bc47462612e71, type: 3}
   m_PrefabInstance: {fileID: 1732718529}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1734713666 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4593805220597472024, guid: 434417b606fbffd4da5311a70a4dd1da, type: 3}
+  m_PrefabInstance: {fileID: 283030643}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1739894713 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8674890491955653370, guid: 4e109c73db86a424f8c657eed4d2824b, type: 3}
@@ -51220,7 +51221,7 @@ Transform:
   - {fileID: 599882802}
   - {fileID: 772716978}
   - {fileID: 293587017}
-  - {fileID: 283030644}
+  - {fileID: 1734713666}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2109787680

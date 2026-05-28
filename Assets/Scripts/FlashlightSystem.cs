@@ -19,7 +19,9 @@ public class FlashlightSystem : MonoBehaviour
     
     private bool tieneLinterna = false;
     private bool estaPrendida = false;
-    private float intensidadOriginal; 
+    private float intensidadOriginal;
+
+    public bool EstaPrendida => estaPrendida;
 
     void Start()
     {
