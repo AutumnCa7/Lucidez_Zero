@@ -40,14 +40,16 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1f;
+
         rb = GetComponent<Rigidbody>();
+
         sanitySystem.OnSanityReduced += GameOver;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        ActivarControles();
     }
 
-   
+
     void Update()
     {
 
@@ -131,9 +133,19 @@ public class PlayerController : MonoBehaviour
             sanitySystem.SetZonaSegura(false);
         }
     }
+    public void ActivarControles()
+    {
+        puedeControlar = true;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 
     public void DesactivarControles()
     {
         puedeControlar = false;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

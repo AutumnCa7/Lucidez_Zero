@@ -25,9 +25,6 @@ public class GameUIManager : MonoBehaviour
     private void PausarJuego()
     {
         Time.timeScale = 0f;
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     public void ReiniciarNivel()
