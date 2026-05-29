@@ -1,30 +1,52 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Obligatorio para cambiar de escenas
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    [Header("Configuración de Escenas")]
-    [SerializeField] private string nombreDelNivel = "SampleScene";
-    [SerializeField] private string nombreDelMenu = "MainMenu";
+    [Header("Paneles de la Interfaz")]
+    public GameObject menuPrincipal;
+    public GameObject panelHowToPlay;
+    public GameObject panelDevelopers;
 
-    // 1. Método para iniciar el juego
+    // 1. BOTÓN START (Carga la escena "SampleScene" directamente sin pedir texto)
     public void Jugar()
     {
-        // Reiniciamos el tiempo por si venimos de una pausa
         Time.timeScale = 1f;
-        SceneManager.LoadScene(nombreDelNivel);
+        SceneManager.LoadScene("SampleScene");
     }
 
-    // 2. Método para volver al menú principal
-    public void IrAlMenu()
+    // 2. BOTÓN HOW TO PLAY (Abre)
+    public void OpenHowToPlay()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(nombreDelMenu);
+        menuPrincipal.SetActive(false);
+        panelHowToPlay.SetActive(true);
     }
 
-    // 3. Método para cerrar el juego
+    // BOTÓN VOLVER DE CONTROLES (Cierra)
+    public void CloseHowToPlay()
+    {
+        panelHowToPlay.SetActive(false);
+        menuPrincipal.SetActive(true);
+    }
+
+    // 3. BOTÓN DEVELOPERS (Abre)
+    public void OpenDevelopers()
+    {
+        menuPrincipal.SetActive(false);
+        panelDevelopers.SetActive(true);
+    }
+
+    // BOTÓN VOLVER DE CRÉDITOS (Cierra)
+    public void CloseDevelopers()
+    {
+        panelDevelopers.SetActive(false);
+        menuPrincipal.SetActive(true);
+    }
+
+    // 4. BOTÓN EXIT
     public void Salir()
     {
-        Application.Quit(); // Cierra el .exe o la app
+        Debug.Log("Saliendo del juego...");
+        Application.Quit();
     }
 }
