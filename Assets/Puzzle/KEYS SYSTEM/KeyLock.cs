@@ -3,14 +3,16 @@ using UnityEngine;
 public class KeyLock : MonoBehaviour
 {
     [Header("Configuración de Cerradura")]
-    [SerializeField] private KeyColor requiredColor; // El color de llave que necesita
+    [SerializeField] private KeyColor requiredColor;
+    [SerializeField] private LockedDoor doorToOpen;
 
-    [Header("Puerta a Abrir")]
-    [SerializeField] private LockedDoor doorToOpen; // El script de la puerta que hicimos antes
+    [Header("Textos")]
+    [SerializeField] private string interactPrompt = "Presiona E para usar la cerradura";
+    [SerializeField] private string lockedMessage = "Está cerrada... Necesito buscar la llave.";
 
     [Header("Audio")]
-    [SerializeField] private AudioClip lockedSound; // Sonido de puerta trancada
-    [SerializeField] private AudioClip unlockSound; // Sonido de cerradura abriendo
+    [SerializeField] private AudioClip myVoiceLockedSound; // Aquí pondrás el audio con tu voz
+    [SerializeField] private AudioClip unlockSound;
 
     private AudioSource audioSource;
     private bool isPlayerNearby = false;
@@ -24,10 +26,13 @@ public class KeyLock : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && doorToOpen.IsLocked())
         {
             isPlayerNearby = true;
             playerInventory = other.GetComponent<PlayerInventory>();
+
+            // Mostramos el aviso en pantalla
+            HUDManager.Instance.ShowInteraction(interactPrompt);
         }
     }
 
@@ -37,12 +42,14 @@ public class KeyLock : MonoBehaviour
         {
             isPlayerNearby = false;
             playerInventory = null;
+
+            // Ocultamos el aviso al alejarnos
+            HUDManager.Instance.HideInteraction();
         }
     }
 
     private void Update()
     {
-        // Si la puerta ya no está trancada, apagamos este script para no seguir comprobando
         if (!doorToOpen.IsLocked())
         {
             this.enabled = false;
@@ -51,20 +58,24 @@ public class KeyLock : MonoBehaviour
 
         if (isPlayerNearby && Input.GetKeyDown(KeyCode.E) && playerInventory != null)
         {
-            // Verificamos si el jugador tiene la llave del color correcto
             if (playerInventory.HasKey(requiredColor))
             {
-                // ¡Tiene la llave!
+                // Si tiene la llave, oculta el texto "Presiona E" y abre
+                HUDManager.Instance.HideInteraction();
                 if (unlockSound != null) audioSource.PlayOneShot(unlockSound);
-
-                // Le damos la orden a tu puerta de que se abra
                 doorToOpen.UnlockAndOpen();
             }
             else
             {
-                // No tiene la llave correcta, suena trancado
-                if (lockedSound != null) audioSource.PlayOneShot(lockedSound);
-                Debug.Log("Necesitas la llave " + requiredColor.ToString() + " para abrir esto.");
+                // ¡AQUÍ PASA LA MAGIA DEL TERROR!
+                // Muestra el texto por 3 segundos
+                HUDManager.Instance.ShowMessage(lockedMessage, 3f);
+
+                // Reproduce tu voz
+                if (myVoiceLockedSound != null && !audioSource.isPlaying)
+                {
+                    audioSource.PlayOneShot(myVoiceLockedSound);
+                }
             }
         }
     }
