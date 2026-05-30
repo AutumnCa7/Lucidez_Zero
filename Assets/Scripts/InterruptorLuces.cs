@@ -25,16 +25,12 @@ public class InterruptorLuces : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
             jugadorCerca = true;
-        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
             jugadorCerca = false;
-        }
     }
 }

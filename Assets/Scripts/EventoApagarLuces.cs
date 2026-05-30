@@ -15,7 +15,7 @@ public class EventoApagarLuces : MonoBehaviour
         {
             activado = true;
 
-            lightManager.ApagarLuces();
+            lightManager.ActivarApagonConParpadeo();
 
             Debug.Log("Evento de oscuridad activado");
 
@@ -23,3 +23,4 @@ public class EventoApagarLuces : MonoBehaviour
         }
     }
 }
+

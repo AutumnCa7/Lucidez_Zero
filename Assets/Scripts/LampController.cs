@@ -2,19 +2,31 @@ using UnityEngine;
 
 public class LampController : MonoBehaviour
 {
-    [Header("Referencias")]
-    [SerializeField] private BoxCollider zonaSegura;
+    [SerializeField] private Collider zonaSegura;
     [SerializeField] private Light pointLight;
+    [SerializeField] private ParticleSystem sparks;
 
-    public void Apagar()
+    public void SetVisual(bool state)
     {
-        zonaSegura.enabled = false;
-        pointLight.enabled = false;
+        pointLight.enabled = state;
     }
 
-    public void Encender()
+    public void ApagarCompleto()
     {
-        zonaSegura.enabled = true;
+        pointLight.enabled = false;
+        zonaSegura.enabled = false;
+    }
+
+    public void EncenderCompleto()
+    {
         pointLight.enabled = true;
+        zonaSegura.enabled = true;
+    }
+    public void PlaySparks()
+    {
+        if (sparks != null)
+        {
+            sparks.Play();
+        }
     }
 }
