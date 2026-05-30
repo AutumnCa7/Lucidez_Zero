@@ -5,6 +5,9 @@ public class PuertaDoble : MonoBehaviour
     [Header("Configuración de Bisagras")]
     [SerializeField] private Transform bisagraIzquierda;
     [SerializeField] private Transform bisagraDerecha;
+
+    [Header("Ajustes de Colisión (Parche)")]
+    [SerializeField] private float tiempoDeMovimiento = 1.5f;
     
     [Header("Ajustes de Apertura")]
     [SerializeField] private float anguloApertura = 90f; 
@@ -53,5 +56,24 @@ public class PuertaDoble : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player")) jugadorCerca = false;
+    }
+
+    private System.Collections.IEnumerator IgnorarColisionTemporalmente()
+    {
+        // Escanea y apaga ambas puertas
+        Collider[] todosLosColliders = GetComponentsInChildren<Collider>();
+
+        foreach (Collider col in todosLosColliders)
+        {
+            if (col.isTrigger == false) col.enabled = false;
+        }
+        
+        yield return new WaitForSeconds(tiempoDeMovimiento);
+        
+        // Enciende ambas puertas
+        foreach (Collider col in todosLosColliders)
+        {
+            if (col.isTrigger == false) col.enabled = true;
+        }
     }
 }
