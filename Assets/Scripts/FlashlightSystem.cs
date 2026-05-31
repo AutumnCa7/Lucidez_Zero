@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FlashlightSystem : MonoBehaviour
@@ -5,7 +6,8 @@ public class FlashlightSystem : MonoBehaviour
     [Header("Referencias")]
     [SerializeField] private Camera camaraJugador; 
     [SerializeField] private GameObject linternaEnMano; 
-    [SerializeField] private Light luzLinterna; 
+    [SerializeField] private Light luzLinterna;
+    [SerializeField] private BatteryManager batteryManager;
     
     [Header("Interacción")]
     [SerializeField] private float distanciaRecojo = 10f; 
@@ -15,8 +17,11 @@ public class FlashlightSystem : MonoBehaviour
     [SerializeField] private float bateriaActual = 100f;
     [SerializeField] private float bateriaMaxima = 100f;
     [SerializeField] private float velocidadDrenado = 2f; // Baja solo si está prendida
-    [SerializeField] private float recargaPorPila = 40f; 
-    
+    [SerializeField] private float recargaPorPila = 40f;
+
+    public event Action<float, float> OnFlashlightBatteryUpdated;
+    public event Action<bool> OnFlashlightObtained;
+
     private bool tieneLinterna = false;
     private bool estaPrendida = false;
     private float intensidadOriginal; 
@@ -26,6 +31,8 @@ public class FlashlightSystem : MonoBehaviour
         if (linternaEnMano != null) linternaEnMano.SetActive(false);
         if (luzLinterna != null) intensidadOriginal = luzLinterna.intensity;
         bateriaActual = bateriaMaxima;
+
+        OnFlashlightBatteryUpdated?.Invoke(bateriaActual, bateriaMaxima);
     }
 
     void Update()
@@ -36,6 +43,8 @@ public class FlashlightSystem : MonoBehaviour
         if (tieneLinterna && estaPrendida && bateriaActual > 0)
         {
             bateriaActual -= velocidadDrenado * Time.deltaTime;
+
+            OnFlashlightBatteryUpdated?.Invoke(bateriaActual, bateriaMaxima);
 
             // El parpadeo visual ocurre mientras se gasta
             ControlarParpadeoVisual();
@@ -50,6 +59,7 @@ public class FlashlightSystem : MonoBehaviour
         // Interacciones normales
         if (Input.GetKeyDown(KeyCode.E)) IntentarRecoger();
         if (tieneLinterna && Input.GetKeyDown(KeyCode.F)) AlternarLuz();
+        RecargarInput();
         
         Debug.DrawRay(camaraJugador.transform.position, camaraJugador.transform.forward * distanciaRecojo, Color.yellow);
     }
@@ -96,6 +106,9 @@ public class FlashlightSystem : MonoBehaviour
             {
                 tieneLinterna = true;
                 linternaEnMano.SetActive(true);
+               
+                OnFlashlightObtained?.Invoke(true);
+
                 Destroy(hit.collider.gameObject);
                 
                 // --- AUTO-ENCENDIDO AL RECOGER ---
@@ -106,16 +119,33 @@ public class FlashlightSystem : MonoBehaviour
             }
             else if (hit.collider.CompareTag("Item_Bateria"))
             {
-                Recargar(hit.collider.gameObject);
+                Debug.Log("Flashlight recogio bateria");
+                batteryManager.AddBattery();
+                Destroy(hit.collider.gameObject);
             }
         }
     }
 
-    private void Recargar(GameObject pila)
+    public void Recargar(float amount)//amount=recargarPorPila
     {
-        bateriaActual += recargaPorPila;
+        bateriaActual += amount;
         if (bateriaActual > bateriaMaxima) bateriaActual = bateriaMaxima;
-        Destroy(pila);
+
+        OnFlashlightBatteryUpdated?.Invoke(bateriaActual, bateriaMaxima);
+
+        
         Debug.Log("Recarga exitosa. Batería al " + bateriaActual + "%");
+    }
+    private void RecargarInput()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+
+            if (bateriaActual < bateriaMaxima && batteryManager.ConsumeBattery())
+            {
+
+                Recargar(recargaPorPila);
+            }
+        }
     }
 }

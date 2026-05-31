@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WalkmanSystem : MonoBehaviour
@@ -6,7 +7,7 @@ public class WalkmanSystem : MonoBehaviour
 
     [Header("Referencias")]
     [SerializeField] private Camera camaraJugador;
-    [SerializeField] private GameObject walkmanEnMano;
+    [SerializeField] private BatteryManager batteryManager;
 
     [Header("Interacción")]
     [SerializeField] private float distanciaRecojo = 10f;
@@ -15,17 +16,21 @@ public class WalkmanSystem : MonoBehaviour
     [Header("Batería de Supervivencia")]
     [SerializeField] private float bateriaActual = 75f;
     [SerializeField] private float bateriaMaxima = 75f;
-    [SerializeField] private float velocidadDrenado = 2f; // Baja solo si está prendida
+    [SerializeField] private float velocidadDrenado = 5f; // Baja solo si está prendida
     [SerializeField] private float recargaPorPila = 40f;
 
-    [SerializeField] private float sanityRestoring; //sube la cordura lentamente al utilizar el objeto
+    [SerializeField] private float sanityRestoring= 0.5f; //sube la cordura lentamente al utilizar el objeto
     private bool tieneWalkman = false;
     private bool estaPrendido = false;
+
+    public event Action<float, float> OnWalkmanBatteryUpdated;
+    public event Action<bool> OnWalkmanObtained;
 
     void Start()
     {
         bateriaActual = bateriaMaxima;
 
+        OnWalkmanBatteryUpdated?.Invoke(bateriaActual, bateriaMaxima);
     }
 
 
@@ -33,13 +38,20 @@ public class WalkmanSystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E)) IntentarRecoger();
         if (tieneWalkman && Input.GetKeyDown(KeyCode.G))
-        { estaPrendido = !estaPrendido; }
-
+        {
+            if (bateriaActual > 0)
+            {
+                estaPrendido = !estaPrendido;
+            }
+        }
         if (estaPrendido && bateriaActual > 0)
         {
             LoseBattery();
             RestoreSanity(sanityRestoring * Time.deltaTime);
+
+
         } //mas tarde me gustaria especificar
+        RecargarInput();
     }
 
     private void IntentarRecoger()
@@ -47,10 +59,13 @@ public class WalkmanSystem : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(camaraJugador.transform.position, camaraJugador.transform.forward, out hit, distanciaRecojo, capaItems))
         {
+            Debug.Log("COLIDER WALKMAN"+hit.collider.name);
             if (hit.collider.CompareTag("Item_Walkman"))
             {
                 tieneWalkman = true;
-                walkmanEnMano.SetActive(true);
+      
+                OnWalkmanObtained?.Invoke(true);
+
                 Destroy(hit.collider.gameObject);
 
                 // --- AUTO-ENCENDIDO AL RECOGER ---
@@ -58,10 +73,7 @@ public class WalkmanSystem : MonoBehaviour
 
                 Debug.Log("Walkman recogida y encendida. Gastando batería...");
             }
-            else if (hit.collider.CompareTag("Item_Bateria"))
-            {
-                Recargar(hit.collider.gameObject);
-            }
+            
         }
     }
     void LoseBattery()
@@ -77,31 +89,41 @@ public class WalkmanSystem : MonoBehaviour
             estaPrendido=false;
         }
     }
-    private void Recargar(GameObject pila)
+    private void Recargar(float amount)
     {
-        bateriaActual += recargaPorPila;
+        bateriaActual += amount;
         if (bateriaActual > bateriaMaxima) bateriaActual = bateriaMaxima;
-        Destroy(pila);
+
+        OnWalkmanBatteryUpdated?.Invoke(bateriaActual, bateriaMaxima);
+
+        
         Debug.Log("Recarga exitosa. Batería al " + bateriaActual + "%");
     }
 
-    public void RestoreSanity(float cantidad)
+    private void RecargarInput ()
     {
-        if (sanitySystem != null)
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            sanitySystem.ModifySanity(cantidad);
+         
+            if (bateriaActual  < bateriaMaxima && batteryManager.ConsumeBattery())
+            {
+                Recargar(recargaPorPila);
+            }
         }
     }
 
-    public void NullLoseSanityBySound()
+    public void RestoreSanity(float cantidad )
     {
+       
+        if (sanitySystem != null)
+        {
+            sanitySystem.ModifySanity(cantidad);
+            OnWalkmanBatteryUpdated?.Invoke(bateriaActual, bateriaMaxima);
 
+        }
     }
 
-}
+    //el walkman se da a entender que esta prendido (tienewalkman=true) con el sonido, no utiliza ningun sprite como la linterna. Se debe programar al momento de aplicar sonido al juego
 
-/*Cosas que corregir:
-Baja muy lento la bateria
-Sube un montonazo la cordura, hay que bajarlo
-Aplicar sistema de gestion de pilas, las pilas se utilizan automaticamente y cargan los dos objetos.
-*/
+
+}
