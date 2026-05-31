@@ -38,6 +38,9 @@ public class PuertaDoble : MonoBehaviour
         if (jugadorCerca && Input.GetKeyDown(KeyCode.E))
         {
             estaAbierta = !estaAbierta; // Cambia el estado de abrir a cerrar o viceversa
+            
+            // ---> ¡ESTA ES LA LÍNEA QUE FALTABA! <---
+            StartCoroutine(IgnorarColisionTemporalmente());
         }
 
         // Interpolación suave para ambas bisagras al mismo tiempo
