@@ -2993,6 +2993,13 @@ MonoBehaviour:
     intertaction:
     "E"
 
+    Turn on the flashlight: "F"
+
+    Reload flashlight: "R"
+
+    Reload
+    walkman: "T"
+
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f16fee1f40c3f8048b13f0faa24fd623, type: 2}
@@ -3020,7 +3027,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 45.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

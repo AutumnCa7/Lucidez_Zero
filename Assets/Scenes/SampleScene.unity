@@ -38570,7 +38570,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisparadorObjeto
   objetoVolador: {fileID: 1867818514}
-  direccionFuerza: {x: 20, y: 5, z: 0}
+  direccionFuerza: {x: 30, y: 5, z: 0}
 --- !u!1 &1575327264
 GameObject:
   m_ObjectHideFlags: 0
