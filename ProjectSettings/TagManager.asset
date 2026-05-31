@@ -7,6 +7,7 @@ TagManager:
   - LuzSegura
   - Item_Bateria
   - Item_Linterna
+  - BotonTele
   layers:
   - Default
   - TransparentFX
