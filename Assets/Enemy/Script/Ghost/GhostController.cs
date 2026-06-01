@@ -17,7 +17,7 @@ public class GhostController : MonoBehaviour
     [Header("Audio Clips")]
     [SerializeField] private AudioClip fastFootstepsClip;
     [SerializeField] private AudioClip stealSoundClip;
-    [SerializeField] private AudioClip laughSoundClip; // Risita malvada al aparecer atras
+    [SerializeField] private AudioClip laughSoundClip; 
 
     private NavMeshAgent agent;
     private AudioSource audioSource;
@@ -60,6 +60,7 @@ public class GhostController : MonoBehaviour
 
     public void Vanish()
     {
+        FindFirstObjectByType<DynamicAudioController>().ReturnToNormalAudio();
         isCrossingHallway = false;
         isChasingPlayer = false;
         gameObject.SetActive(false);
@@ -96,6 +97,7 @@ public class GhostController : MonoBehaviour
     {
         if (hasStolenFlashlight) return;
 
+        FindFirstObjectByType<DynamicAudioController>().TriggerPanicAudio();
         gameObject.SetActive(true);
         isChasingPlayer = true;
         isCrossingHallway = false;

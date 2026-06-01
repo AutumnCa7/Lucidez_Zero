@@ -158,7 +158,7 @@ MonoBehaviour:
   audioSource: {fileID: 915763065414669012}
   clipCry: {fileID: 8300000, guid: 75d5406ca6d9ae04d89ef1cedab8e8be, type: 3}
   clipScream: {fileID: 8300000, guid: a2f94a7a0452927419f7b58f63b9d995, type: 3}
-  clipAttack: {fileID: 0}
+  clipAttack: {fileID: 8300000, guid: de687b5bd8799484384d1d6b0dd8a6e0, type: 3}
 --- !u!82 &915763065414669012
 AudioSource:
   m_ObjectHideFlags: 0
@@ -168,18 +168,18 @@ AudioSource:
   m_GameObject: {fileID: 7567868933054450552}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6405568376939882724, guid: be1a1c50e6553c448adc06ef5d29c3c3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.93
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
+  Priority: 105
+  DopplerLevel: 0.7
   MinDistance: 3
   MaxDistance: 40
   Pan2D: 0

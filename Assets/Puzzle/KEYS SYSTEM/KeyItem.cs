@@ -4,7 +4,7 @@ public class KeyItem : MonoBehaviour
 {
     [Header("Configuración de la Llave")]
     [SerializeField] private KeyColor myColor;
-    [SerializeField] private string interactPrompt = "Presiona E para tomar la llave";
+    [SerializeField] private string interactPrompt = "Presiona E para recoger";
 
     [Header("Audio")]
     [SerializeField] private AudioClip pickupSound;
@@ -19,7 +19,7 @@ public class KeyItem : MonoBehaviour
             isPlayerNearby = true;
             playerInventory = other.GetComponent<PlayerInventory>();
 
-            // Mostramos el texto
+            
             HUDManager.Instance.ShowInteraction(interactPrompt);
         }
     }
@@ -31,7 +31,7 @@ public class KeyItem : MonoBehaviour
             isPlayerNearby = false;
             playerInventory = null;
 
-            // Ocultamos el texto
+            
             HUDManager.Instance.HideInteraction();
         }
     }
@@ -47,7 +47,7 @@ public class KeyItem : MonoBehaviour
                 AudioSource.PlayClipAtPoint(pickupSound, transform.position);
             }
 
-            // Ocultamos el texto porque el objeto va a desaparecer
+            
             HUDManager.Instance.HideInteraction();
             Destroy(gameObject);
         }

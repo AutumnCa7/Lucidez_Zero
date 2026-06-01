@@ -8,10 +8,10 @@ public class KeyLock : MonoBehaviour
 
     [Header("Textos")]
     [SerializeField] private string interactPrompt = "Presiona E para usar la cerradura";
-    [SerializeField] private string lockedMessage = "Está cerrada... Necesito buscar la llave.";
+    [SerializeField] private string lockedMessage = "Está cerrada... Necesito buscar algo para abrirla!";
 
     [Header("Audio")]
-    [SerializeField] private AudioClip myVoiceLockedSound; // Aquí pondrás el audio con tu voz
+    [SerializeField] private AudioClip myVoiceLockedSound; 
     [SerializeField] private AudioClip unlockSound;
 
     private AudioSource audioSource;
@@ -31,7 +31,7 @@ public class KeyLock : MonoBehaviour
             isPlayerNearby = true;
             playerInventory = other.GetComponent<PlayerInventory>();
 
-            // Mostramos el aviso en pantalla
+            
             HUDManager.Instance.ShowInteraction(interactPrompt);
         }
     }
@@ -60,18 +60,17 @@ public class KeyLock : MonoBehaviour
         {
             if (playerInventory.HasKey(requiredColor))
             {
-                // Si tiene la llave, oculta el texto "Presiona E" y abre
+                
                 HUDManager.Instance.HideInteraction();
                 if (unlockSound != null) audioSource.PlayOneShot(unlockSound);
                 doorToOpen.UnlockAndOpen();
             }
             else
             {
-                // ¡AQUÍ PASA LA MAGIA DEL TERROR!
-                // Muestra el texto por 3 segundos
+                
                 HUDManager.Instance.ShowMessage(lockedMessage, 3f);
 
-                // Reproduce tu voz
+                
                 if (myVoiceLockedSound != null && !audioSource.isPlaying)
                 {
                     audioSource.PlayOneShot(myVoiceLockedSound);
