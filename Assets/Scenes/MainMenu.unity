@@ -2629,7 +2629,9 @@ MonoBehaviour:
     nicolas alemanno
 
     nicolas
-    panzardi'
+    panzardi
+
+    Santiago Boschini'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f16fee1f40c3f8048b13f0faa24fd623, type: 2}
   m_sharedMaterial: {fileID: -2562031917596126095, guid: f16fee1f40c3f8048b13f0faa24fd623, type: 2}
@@ -2656,7 +2658,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 63.9
+  m_fontSize: 53.25
   m_fontSizeBase: 72
   m_fontWeight: 400
   m_enableAutoSizing: 1
