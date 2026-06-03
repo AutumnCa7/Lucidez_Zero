@@ -3,12 +3,11 @@ using UnityEngine;
 public class DisparadorObjeto : MonoBehaviour
 {
     [Header("Configuración del Objeto (3D)")]
-    [Tooltip("Arrastrá acá la silla de la Jerarquía.")]
-    public Rigidbody objetoVolador; 
+    public Rigidbody objetoVolador;
 
     [Header("Fuerza del Lanzamiento")]
-    [Tooltip("Dirección y fuerza en ejes X, Y, Z. Ejemplo: X = -50 (fuerza hacia un lado), Y = 15 (hacia arriba), Z = 0.")]
-    public Vector3 direccionFuerza = new Vector3(-50f, 15f, 0f);
+    public Vector3 direccionFuerza = new Vector3(-1f, 0.3f, 0f);
+    public float multiplicadorFuerza = 800f;
 
     private bool yaSeActivo = false;
 
@@ -16,7 +15,7 @@ public class DisparadorObjeto : MonoBehaviour
     {
         if (other.CompareTag("Player") && !yaSeActivo)
         {
-            Debug.Log("¡El jugador entró al trigger 3D! Lanzando objeto...");
+            Debug.Log("¡Trigger detectado");
             yaSeActivo = true;
             LanzarObjeto();
         }
@@ -27,8 +26,8 @@ public class DisparadorObjeto : MonoBehaviour
         if (objetoVolador != null)
         {
             objetoVolador.isKinematic = false;
-
-            objetoVolador.AddForce(direccionFuerza, ForceMode.Impulse);
+            Vector3 fuerzaFinal = direccionFuerza.normalized * multiplicadorFuerza;
+            objetoVolador.AddForce(fuerzaFinal, ForceMode.Impulse);
         }
     }
 }
