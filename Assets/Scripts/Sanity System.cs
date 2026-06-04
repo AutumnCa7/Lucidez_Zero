@@ -5,7 +5,7 @@ public class SanitySystem : MonoBehaviour
 {
     [SerializeField] private float corduraMaxima = 100f;
     [SerializeField] private float velocidadDrenado = 3f;
-
+    [SerializeField] private FlashlightSystem flashlightSystem;
     public float CorduraMaxima => corduraMaxima;
     public float CorduraActual=> corduraActual;
 
@@ -21,15 +21,15 @@ public class SanitySystem : MonoBehaviour
         OnSanityUpdated?.Invoke(corduraActual,corduraMaxima);
     }
 
-   
+
     void Update()
     {
-        if (enZonaSegura)return;
-        if (!enZonaSegura)
-        {
-            ModifySanity(-velocidadDrenado * Time.deltaTime);
-        }
-        
+        if (enZonaSegura) return;
+
+        if (flashlightSystem != null && flashlightSystem.EstaPrendida)
+            return;
+
+        ModifySanity(-velocidadDrenado * Time.deltaTime);
     }
 
     public void ModifySanity (float amount)
@@ -42,7 +42,7 @@ public class SanitySystem : MonoBehaviour
             OnSanityReduced?.Invoke();
         }
     }
-
-   public void SetZonaSegura (bool value)
+    
+    public void SetZonaSegura (bool value)
     { enZonaSegura = value; }
 }
