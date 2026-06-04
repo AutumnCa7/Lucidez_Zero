@@ -43,10 +43,10 @@ public class PlayerFootsteps : MonoBehaviour
             int randomIndex = Random.Range(0, footstepClips.Length);
 
             // Modifico ligeramente el Pitch para que no suene robotico
-            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            audioSource.pitch = Random.Range(0.4f, 0.6f);
 
             //Modificar  el Volumen para realismo
-            audioSource.volume = Random.Range(0.8f, 1.0f);
+            audioSource.volume = Random.Range(0.3f, 0.4f);
 
             
             audioSource.PlayOneShot(footstepClips[randomIndex]);

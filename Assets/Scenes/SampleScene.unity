@@ -29889,7 +29889,7 @@ AudioSource:
   Priority: 166
   DopplerLevel: 0.51
   MinDistance: 1
-  MaxDistance: 6
+  MaxDistance: 2
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -34407,7 +34407,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 82f884ddbe77d8144ae5fa63569a9851, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.78
+  m_Volume: 0.82
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -36152,7 +36152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SanitySystem
   corduraMaxima: 100
-  velocidadDrenado: 3
+  velocidadDrenado: 0
+  flashlightSystem: {fileID: 0}
 --- !u!4 &1276963735
 Transform:
   m_ObjectHideFlags: 0
@@ -44438,7 +44439,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 67
   DopplerLevel: 0.51
-  MinDistance: 4
+  MinDistance: 2
   MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
@@ -44637,7 +44638,7 @@ MonoBehaviour:
   - {fileID: 427971108}
   stealDistance: 2
   fastFootstepsClip: {fileID: 8300000, guid: ccb9541c75db2aa41ae79421093d18b4, type: 3}
-  stealSoundClip: {fileID: 8300000, guid: 970e3e6e4bf54c44cb8be71f61f780dc, type: 3}
+  stealSoundClip: {fileID: 8300000, guid: d8e141d4b68d7014f97ba3d462cf8282, type: 3}
   laughSoundClip: {fileID: 8300000, guid: 0405b3084ae63cc4d8bff28226eb54ca, type: 3}
   hasStolenFlashlight: 0
 --- !u!82 &1608772849
@@ -56236,16 +56237,16 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 3201dcc7985c86744952c19ad620ec1c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.82
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  DopplerLevel: 0.55
+  MinDistance: 2
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -66957,11 +66958,11 @@ AudioSource:
   m_GameObject: {fileID: 303139706}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 6405568376939882724, guid: be1a1c50e6553c448adc06ef5d29c3c3, type: 2}
+  OutputAudioMixerGroup: {fileID: -175342236291321424, guid: be1a1c50e6553c448adc06ef5d29c3c3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.42
+  m_Volume: 0
   m_Pitch: 0.9
   Loop: 0
   Mute: 0

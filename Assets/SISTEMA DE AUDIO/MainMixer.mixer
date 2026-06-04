@@ -120,7 +120,7 @@ AudioMixerController:
   m_UpdateMode: 0
   m_ExposedParameters:
   - guid: 1a751058334f30046ad1d2464744160f
-    name: MasterLowPass
+    name: MasterLowpass
   m_AudioMixerGroupViews:
   - guids:
     - 59a3f61d0fef5154490fcef8634a205f
@@ -180,10 +180,11 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 814d3e0ef08a2884996205e99580fd80
   m_FloatValues:
-    3fbc3180f7aab374297954a94998cf21: -6.7290187
-    80d5e628dfc37e245af51c627cea964f: -16.035946
+    3fbc3180f7aab374297954a94998cf21: -7.436926
+    87b39664dab8c444e9a1b5e658cadb92: -2.1789188
+    80d5e628dfc37e245af51c627cea964f: -14.104155
     cd644febf507df1479d31fdc972bcd29: -0.11417794
-    7905b5ee19fc6cb44b3489a263ac6dc6: -5.0891786
+    7905b5ee19fc6cb44b3489a263ac6dc6: -4.7840652
   m_TransitionOverrides: {}
 --- !u!244 &704456740653997636
 AudioMixerEffectController:
