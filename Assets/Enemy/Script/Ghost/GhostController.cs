@@ -34,6 +34,17 @@ public class GhostController : MonoBehaviour
 
     private void Update()
     {
+        
+            // Este código lee la velocidad del cubo. Si se mueve rápido, corre. Si se frena, se queda quieta.
+            Animator anim = GetComponent<Animator>();
+            UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+            if (anim != null && agent != null)
+            {
+                // Si la velocidad es mayor a 0.1, el bool se vuelve true y arranca a correr
+                anim.SetBool("Corriendo", agent.velocity.magnitude > 0.1f);
+            }
+        
         if (isChasingPlayer && playerTransform != null)
         {
             agent.SetDestination(playerTransform.position);

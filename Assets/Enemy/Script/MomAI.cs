@@ -9,6 +9,7 @@ public class MomAI : MonoBehaviour
 
     private Transform playerTransform;
     private NavMeshAgent agent;
+    private Animator anim; 
 
     [Header("Setting")]
     public float velocityRun = 8f;
@@ -25,11 +26,16 @@ public class MomAI : MonoBehaviour
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>(); 
         agent.enabled = false;
 
-        
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null) playerTransform = player.transform;
+    }
+    void Start()
+    {
+
+        WakeUpMom();
     }
 
     public void WakeUpMom()
@@ -40,7 +46,6 @@ public class MomAI : MonoBehaviour
             stateCurrent = StateMom.Cry;
             Debug.Log("Mom esta llorando");
 
-            // el llanto en loop
             if (audioSource != null && clipCry != null)
             {
                 audioSource.clip = clipCry;
@@ -61,6 +66,8 @@ public class MomAI : MonoBehaviour
             case StateMom.Cry:
                 agent.isStopped = true;
                 break;
+
+              
 
             case StateMom.Chase:
                 agent.isStopped = false;
@@ -84,14 +91,15 @@ public class MomAI : MonoBehaviour
     {
         while (stateCurrent == StateMom.Cry)
         {
-            
             if (Vector3.Distance(transform.position, playerTransform.position) < 10f)
             {
                 FindFirstObjectByType<DynamicAudioController>().TriggerFinalBattleAudio();
                 stateCurrent = StateMom.Chase;
                 Debug.Log("¡Te ve y empieza a correr!");
 
-                // Cortamos el llanto y dispara el grito de susto
+                
+                if (anim != null) anim.SetTrigger("Chase");
+
                 if (audioSource != null && clipScream != null)
                 {
                     audioSource.Stop();
@@ -108,7 +116,9 @@ public class MomAI : MonoBehaviour
         canAttack = false;
         Debug.Log("¡Te golpeo!");
 
-        // Reproduce sonido de ataque
+        
+        if (anim != null) anim.SetTrigger("Attack");
+
         if (audioSource != null && clipAttack != null)
         {
             audioSource.PlayOneShot(clipAttack);
@@ -121,6 +131,8 @@ public class MomAI : MonoBehaviour
         if (Vector3.Distance(transform.position, playerTransform.position) > distanceAttack)
         {
             stateCurrent = StateMom.Chase;
+            
+            if (anim != null) anim.SetTrigger("Chase");
         }
         canAttack = true;
     }
