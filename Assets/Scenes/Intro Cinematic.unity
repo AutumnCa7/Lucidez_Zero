@@ -1770,6 +1770,8 @@ PlayableDirector:
     value: {fileID: 1285605723}
   - key: {fileID: -4367062831630628413, guid: b4ddf3bdc18ea814099ca62f6e380f07, type: 2}
     value: {fileID: 500784782}
+  - key: {fileID: 6899550733270420901, guid: b4ddf3bdc18ea814099ca62f6e380f07, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References:
     - 8370ff099e62f8b4bab1c9b71b8c95d2: {fileID: 2061024839}
@@ -1796,7 +1798,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f51ae8af725e6cc4fb27fed12e4e0454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeLineLoader
-  nextScene: SampleScene
+  siguienteEscena: SampleScene
+  tiempoEspera: 5
 --- !u!1 &1285605722
 GameObject:
   m_ObjectHideFlags: 0
