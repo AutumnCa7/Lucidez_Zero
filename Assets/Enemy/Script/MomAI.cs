@@ -16,6 +16,7 @@ public class MomAI : MonoBehaviour
     public float distanceAttack = 1.5f;
     public float timePunch = 1.0f;
     bool canAttack = true;
+    public float dañoCordura = 25f;
 
     [Header("Audio Setting")]
     public AudioSource audioSource;
@@ -95,7 +96,7 @@ public class MomAI : MonoBehaviour
             {
                 FindFirstObjectByType<DynamicAudioController>().TriggerFinalBattleAudio();
                 stateCurrent = StateMom.Chase;
-                Debug.Log("�Te ve y empieza a correr!");
+                Debug.Log("�Te ve y empieza a correr!");
 
                 
                 if (anim != null) anim.SetTrigger("Chase");
@@ -114,9 +115,8 @@ public class MomAI : MonoBehaviour
     IEnumerator Hit()
     {
         canAttack = false;
-        Debug.Log("�Te golpeo!");
+        Debug.Log("¡Te golpeo!");
 
-        
         if (anim != null) anim.SetTrigger("Attack");
 
         if (audioSource != null && clipAttack != null)
@@ -124,7 +124,20 @@ public class MomAI : MonoBehaviour
             audioSource.PlayOneShot(clipAttack);
         }
 
-        // ACA SE PONE EL CODIGO PARA SACAR VIDA AL PLAYER STEF
+        // ---> CÓDIGO PARA SACAR CORDURA AL PLAYER <---
+        // Busca el Manager de cordura en cualquier parte de la escena
+        SanitySystem corduraPlayer = FindFirstObjectByType<SanitySystem>();
+            
+        if (corduraPlayer != null)
+        {
+            // Le pasamos el daño en NEGATIVO porque ModifySanity suma el valor
+            corduraPlayer.ModifySanity(-dañoCordura);
+            Debug.Log("¡La Mom te quitó cordura!");
+        }
+        else
+        {
+            Debug.LogWarning("¡No se encontró el SanitySystem en la escena!");
+        }
 
         yield return new WaitForSeconds(timePunch);
 
