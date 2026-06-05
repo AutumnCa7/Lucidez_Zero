@@ -1101,6 +1101,7 @@ GameObject:
   - component: {fileID: 992922099}
   - component: {fileID: 992922101}
   - component: {fileID: 992922102}
+  - component: {fileID: 992922103}
   m_Layer: 5
   m_Name: Titulo
   m_TagString: Untagged
@@ -1199,6 +1200,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &992922103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992922097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Timeline::UnityEngine.Timeline.SignalReceiver
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: c7fdabe61a73d444690561d71e2feabf, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &1223512712
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,6 +1231,7 @@ GameObject:
   - component: {fileID: 1223512714}
   - component: {fileID: 1223512713}
   - component: {fileID: 1223512717}
+  - component: {fileID: 1223512718}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1248,10 +1268,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1268,8 +1288,8 @@ Canvas:
   m_GameObject: {fileID: 1223512712}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 595123425}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1331,6 +1351,20 @@ PlayableDirector:
     value: {fileID: 992922102}
   m_ExposedReferences:
     m_References: []
+--- !u!114 &1223512718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223512712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f51ae8af725e6cc4fb27fed12e4e0454, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimelineLoader
+  siguienteEscena: MainMenu
+  tiempoEspera: 5
 --- !u!1 &1325410099
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,18 +18,21 @@ public class GameUIManager : MonoBehaviour
     public void MostrarVictoria()
     {
         player.DesactivarControles();
-        victoryPanel.SetActive(true);
-        PausarJuego();
+        SceneManager.LoadScene("Final Cinematic");
     }
 
     private void PausarJuego()
     {
         Time.timeScale = 0f;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void ReiniciarNivel()
     {
         Time.timeScale = 1f;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

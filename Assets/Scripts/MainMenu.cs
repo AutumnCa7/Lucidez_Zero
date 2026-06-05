@@ -8,10 +8,9 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Intro Cinematic");
     }
 
-    public void StartSampleScene()
+    public void QuitGame()
     {
-        Debug.Log("SE DISPARÓ EL SIGNAL");
-        SceneManager.LoadScene("SampleScene");
+        Application.Quit();
     }   
 }
 

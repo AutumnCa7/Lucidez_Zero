@@ -12,7 +12,7 @@ public class MenuManager : MonoBehaviour
     public void Jugar()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Intro Cinematic");
     }
 
     // 2. BOTÓN HOW TO PLAY (Abre)

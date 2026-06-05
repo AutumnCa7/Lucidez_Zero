@@ -2,13 +2,19 @@ using UnityEngine;
 
 public class ExitDoorTrigger : MonoBehaviour
 {
-    public GameUIManager gameUI;
+    [SerializeField] private FadeManager fadeManager;
+
+    private bool activado = false;
 
     private void OnTriggerEnter(Collider other)
     {
+        if (activado) return;
+
         if (other.CompareTag("Player"))
         {
-            gameUI.MostrarVictoria();
+            activado = true;
+
+            fadeManager.FadeToScene("Final Cinematic");
         }
     }
 }
