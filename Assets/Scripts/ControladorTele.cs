@@ -8,7 +8,7 @@ public class ControladorTele : MonoBehaviour
     public GameObject objetoPantalla;
     public VideoPlayer reproductorVideo;
     public Light luzDeLaTele;
-
+    [SerializeField] private AudioSource sonidoEncendido;
     [Header("Configuración del Jumpscare")]
     public GameObject imagenJumpscare;
     public float dudaricionSusto = 1.5f;
@@ -49,6 +49,7 @@ public class ControladorTele : MonoBehaviour
 
     private IEnumerator RutinaJumpscare()
     {
+        sonidoEncendido.Play();
         imagenJumpscare.SetActive(true);
         Debug.Log("¡BUUUH!");
 

@@ -4,6 +4,7 @@ public class InterruptorLuces : MonoBehaviour
 {
     [SerializeField] private LightEventManager lightManager;
 
+    
     private bool jugadorCerca = false;
     private bool usado = false;
 
@@ -17,7 +18,7 @@ public class InterruptorLuces : MonoBehaviour
             usado = true;
 
             lightManager.EncenderLuces();
-
+            
             Debug.Log("Interruptor activado");
         }
     }
