@@ -4,7 +4,7 @@ public class LockedDoor : MonoBehaviour
 {
     [Header("Door Settings")]
     [SerializeField] private bool isLocked = true;
-    [SerializeField] private float openAngle = 90f; // Cuánto se va a abrir la puerta
+    [SerializeField] private float openAngle = 90f; // Cuï¿½nto se va a abrir la puerta
     [SerializeField] private float openSpeed = 2f;
 
     [Header("Audio")]
@@ -22,14 +22,14 @@ public class LockedDoor : MonoBehaviour
 
     private void Update()
     {
-        // Si el código fue correcto, rotamos la puerta suavemente hacia su ángulo abierta
+        // Si el cï¿½digo fue correcto, rotamos la puerta suavemente hacia su ï¿½ngulo abierta
         if (shouldOpen)
         {
             transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, Time.deltaTime * openSpeed);
         }
     }
 
-    // Esta función la llamará el Tablero Digital cuando el código sea correcto
+    // Esta funciï¿½n la llamarï¿½ el Tablero Digital cuando el cï¿½digo sea correcto
     public void UnlockAndOpen()
     {
         if (!isLocked) return;
@@ -37,7 +37,7 @@ public class LockedDoor : MonoBehaviour
         isLocked = false;
         shouldOpen = true;
 
-        // Calculamos la rotación final sumando el ángulo de apertura a la rotación actual en el eje Y
+        // Calculamos la rotaciï¿½n final sumando el ï¿½ngulo de apertura a la rotaciï¿½n actual en el eje Y
         targetRotation = Quaternion.Euler(0, transform.localEulerAngles.y + openAngle, 0);
 
         if (openDoorSound != null)
