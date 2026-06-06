@@ -36,5 +36,7 @@ public class TimelineLoader : MonoBehaviour
 
         Time.timeScale = 1f;
         SceneManager.LoadScene(siguienteEscena);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
