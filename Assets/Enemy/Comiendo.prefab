@@ -975,7 +975,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 4236edd6bc491aa43946d6a23834ea6f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1038,6 +1038,7 @@ MonoBehaviour:
   velocityRun: 8
   distanceAttack: 4
   timePunch: 1
+  "da\xF1oCordura": 25
   audioSource: {fileID: 2631039505908297841}
   clipCry: {fileID: 8300000, guid: 75d5406ca6d9ae04d89ef1cedab8e8be, type: 3}
   clipScream: {fileID: 8300000, guid: a2f94a7a0452927419f7b58f63b9d995, type: 3}
