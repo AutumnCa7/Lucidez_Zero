@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using TMPro; // Asegúrate de tener esta librería para manejar TextMeshPro
 
 public class WalkmanSystem : MonoBehaviour
 {
@@ -8,7 +9,15 @@ public class WalkmanSystem : MonoBehaviour
     [Header("Referencias")]
     [SerializeField] private Camera camaraJugador;
     [SerializeField] private BatteryManager batteryManager;
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource; // Este es para la música
+
+    [Header("Efectos de Sonido")]
+    [SerializeField] private AudioSource audioEfectos; // Arrastra acá el mismo AudioSource u otro secundario
+    [SerializeField] private AudioClip clipEncender;   // Arrastra el "Click"
+    [SerializeField] private AudioClip clipApagar;     // Arrastra el "Shhht"
+
+    [Header("Interfaz UI (Texto Recoger)")]
+    [SerializeField] private TextMeshProUGUI textoRecogerUI; // Arrastra el texto de tu Canvas acá
 
     [Header("Interacción")]
     [SerializeField] private float distanciaRecojo = 10f;
@@ -38,21 +47,33 @@ public class WalkmanSystem : MonoBehaviour
             audioSource.playOnAwake = false;
         }
 
+        // Nos aseguramos de que el texto arranque apagado
+        if (textoRecogerUI != null)
+        {
+            textoRecogerUI.gameObject.SetActive(false);
+        }
+
         OnWalkmanBatteryUpdated?.Invoke(bateriaActual, bateriaMaxima);
     }
 
     void Update()
     {
+        // 1. Detección constante para mostrar el texto en pantalla
+        ChequearMirada();
+
+        // 2. Input para recoger (E)
         if (Input.GetKeyDown(KeyCode.E))
         {
             IntentarRecoger();
         }
 
+        // 3. Input para prender/apagar (G)
         if (tieneWalkman && Input.GetKeyDown(KeyCode.G))
         {
             ToggleWalkman();
         }
 
+        // 4. Lógica de batería y cordura
         if (estaPrendido && bateriaActual > 0)
         {
             LoseBattery();
@@ -60,6 +81,33 @@ public class WalkmanSystem : MonoBehaviour
         }
 
         RecargarInput();
+    }
+
+    // --- NUEVA FUNCIÓN: Muestra u oculta el texto si miramos un objeto ---
+    private void ChequearMirada()
+    {
+        // Si no asignaste el texto en el inspector, no hacemos nada para evitar errores
+        if (textoRecogerUI == null) return;
+
+        RaycastHit hit;
+        // Lanzamos un rayo invisible desde la cámara
+        if (Physics.Raycast(camaraJugador.transform.position, camaraJugador.transform.forward, out hit, distanciaRecojo, capaItems))
+        {
+            // Si el rayo choca contra CUALQUIER ítem recogible, mostramos el texto
+            if (hit.collider.CompareTag("Item_Walkman") || hit.collider.CompareTag("Item_Llave") || hit.collider.CompareTag("Item_Pila"))
+            {
+                textoRecogerUI.gameObject.SetActive(true);
+            }
+            else
+            {
+                textoRecogerUI.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            // Si no miramos a nada, apagamos el texto
+            textoRecogerUI.gameObject.SetActive(false);
+        }
     }
 
     private void ToggleWalkman()
@@ -73,13 +121,18 @@ public class WalkmanSystem : MonoBehaviour
         {
             if (estaPrendido)
             {
-                // Reinicia siempre la canción desde el principio
+                // Reproducir "Click"
+                if (audioEfectos != null && clipEncender != null) audioEfectos.PlayOneShot(clipEncender);
+
                 audioSource.Stop();
                 audioSource.time = 0f;
                 audioSource.Play();
             }
             else
             {
+                // Reproducir "Shhht"
+                if (audioEfectos != null && clipApagar != null) audioEfectos.PlayOneShot(clipApagar);
+
                 audioSource.Stop();
             }
         }
@@ -98,8 +151,6 @@ public class WalkmanSystem : MonoBehaviour
             distanciaRecojo,
             capaItems))
         {
-            Debug.Log("COLIDER WALKMAN " + hit.collider.name);
-
             if (hit.collider.CompareTag("Item_Walkman"))
             {
                 tieneWalkman = true;
@@ -111,15 +162,24 @@ public class WalkmanSystem : MonoBehaviour
 
                 if (audioSource != null)
                 {
+                    // Reproducir "Click" al agarrarlo
+                    if (audioEfectos != null && clipEncender != null) audioEfectos.PlayOneShot(clipEncender);
+
                     audioSource.Stop();
                     audioSource.time = 0f;
                     audioSource.Play();
                 }
 
+                // Apagamos el texto antes de destruir el objeto para que no quede trabado en pantalla
+                if (textoRecogerUI != null) textoRecogerUI.gameObject.SetActive(false);
+
                 Destroy(hit.collider.gameObject);
 
                 Debug.Log("Walkman recogido y encendido.");
             }
+
+            // Aquí puedes agregar otros "if" para recoger llaves o pilas
+            // else if (hit.collider.CompareTag("Item_Llave")) { ... }
         }
     }
 
@@ -134,6 +194,9 @@ public class WalkmanSystem : MonoBehaviour
 
             if (audioSource != null)
             {
+                // Reproducir "Shhht" porque se apagó solo
+                if (audioEfectos != null && clipApagar != null) audioEfectos.PlayOneShot(clipApagar);
+
                 audioSource.Stop();
             }
 
