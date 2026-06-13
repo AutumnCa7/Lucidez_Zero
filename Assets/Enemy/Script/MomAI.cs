@@ -92,7 +92,7 @@ public class MomAI : MonoBehaviour
     {
         while (stateCurrent == StateMom.Cry)
         {
-            if (Vector3.Distance(transform.position, playerTransform.position) < 10f)
+            if (Vector3.Distance(transform.position, playerTransform.position) < 70f)
             {
                 FindFirstObjectByType<DynamicAudioController>().TriggerFinalBattleAudio();
                 stateCurrent = StateMom.Chase;

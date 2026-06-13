@@ -34,15 +34,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d73d675232312b43ad321684452f8e2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 2.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d73d675232312b43ad321684452f8e2, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 3.85
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d73d675232312b43ad321684452f8e2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5d73d675232312b43ad321684452f8e2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1035,14 +1035,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MomAI
   stateCurrent: 0
-  velocityRun: 8
-  distanceAttack: 4
+  velocityRun: 15
+  distanceAttack: 3
   timePunch: 1
-  "da\xF1oCordura": 25
+  "da\xF1oCordura": 12
   audioSource: {fileID: 2631039505908297841}
   clipCry: {fileID: 8300000, guid: 75d5406ca6d9ae04d89ef1cedab8e8be, type: 3}
   clipScream: {fileID: 8300000, guid: a2f94a7a0452927419f7b58f63b9d995, type: 3}
-  clipAttack: {fileID: 0}
+  clipAttack: {fileID: 8300000, guid: 51b4fe1d223ae914ea4b32034775ddf3, type: 3}
 --- !u!195 &821935491060432377
 NavMeshAgent:
   m_ObjectHideFlags: 0

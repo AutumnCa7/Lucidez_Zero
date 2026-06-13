@@ -9,6 +9,9 @@ TagManager:
   - LuzSegura
   - Item_Bateria
   - BotonTele
+  - Item_Walkman
+  - Item_Llave
+  - Item_Pila
   layers:
   - Default
   - TransparentFX

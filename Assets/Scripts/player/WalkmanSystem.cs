@@ -58,22 +58,22 @@ public class WalkmanSystem : MonoBehaviour
 
     void Update()
     {
-        // 1. Detección constante para mostrar el texto en pantalla
+        //detecta constante para mostrar el texto en pantalla
         ChequearMirada();
 
-        // 2. Input para recoger (E)
+        
         if (Input.GetKeyDown(KeyCode.E))
         {
             IntentarRecoger();
         }
 
-        // 3. Input para prender/apagar (G)
+        
         if (tieneWalkman && Input.GetKeyDown(KeyCode.G))
         {
             ToggleWalkman();
         }
 
-        // 4. Lógica de batería y cordura
+        
         if (estaPrendido && bateriaActual > 0)
         {
             LoseBattery();
@@ -83,10 +83,10 @@ public class WalkmanSystem : MonoBehaviour
         RecargarInput();
     }
 
-    // --- NUEVA FUNCIÓN: Muestra u oculta el texto si miramos un objeto ---
+    
     private void ChequearMirada()
     {
-        // Si no asignaste el texto en el inspector, no hacemos nada para evitar errores
+        
         if (textoRecogerUI == null) return;
 
         RaycastHit hit;
@@ -94,7 +94,7 @@ public class WalkmanSystem : MonoBehaviour
         if (Physics.Raycast(camaraJugador.transform.position, camaraJugador.transform.forward, out hit, distanciaRecojo, capaItems))
         {
             // Si el rayo choca contra CUALQUIER ítem recogible, mostramos el texto
-            if (hit.collider.CompareTag("Item_Walkman") || hit.collider.CompareTag("Item_Llave") || hit.collider.CompareTag("Item_Pila"))
+            if (hit.collider.CompareTag("Item_Walkman") || hit.collider.CompareTag("Item_Llave") || hit.collider.CompareTag("Item_Bateria"))
             {
                 textoRecogerUI.gameObject.SetActive(true);
             }
