@@ -44,6 +44,11 @@ public class FlashlightSystem : MonoBehaviour
 
     void Update()
     {
+        if (NoteManager.Instance != null && NoteManager.Instance.IsNoteOpen())
+        {
+            return;
+        }
+
         if (camaraJugador == null) return;
 
         // --- LÓGICA DE CONSUMO: Solo gasta si la tienes Y está prendida ---

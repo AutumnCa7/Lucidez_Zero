@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 4f;
     private float xRotation = 0f;
 
+    [Header("Interacción")]
+    [SerializeField] private Camera camaraJugador;
+    [SerializeField] private float distanciaInteraccion = 3f;
+    [SerializeField] private LayerMask capaNotas;
+
     [Header("Efecto de Desmayo / Cabeza Pesada")]
     [SerializeField] private float velocidadCaidaCabeza = 1.5f; // Qué tan rápido cabecea
     [SerializeField] private float anguloMaximoMareo = 15f; // Grados de inclinación hacia el hombro
@@ -52,10 +57,24 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (NoteManager.Instance != null && NoteManager.Instance.IsNoteOpen())
+            {
+                NoteManager.Instance.CloseNote();
+                return;
+            }
+
+            IntentarLeerNota();
+        }
+
+        if (NoteManager.Instance != null && NoteManager.Instance.IsNoteOpen())
+        {
+            return;
+        }
+
 
         if (!puedeControlar) return;
-
-        //perderCordura fue reemplazado por la clase SanitySystem para un manejo mas escalable de la mecanica a partir de Eventos
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
@@ -115,6 +134,29 @@ public class PlayerController : MonoBehaviour
         else
         {
             inclinacionActualZ = Mathf.Lerp(inclinacionActualZ, 0f, Time.deltaTime * 5f);
+        }
+    }
+
+    private void IntentarLeerNota()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(
+            camaraJugador.transform.position,
+            camaraJugador.transform.forward,
+            out hit,
+            distanciaInteraccion,
+            capaNotas))
+        {
+            NoteInteractable nota =
+                hit.collider.GetComponent<NoteInteractable>();
+
+            if (nota != null)
+            {
+                Debug.Log("Leyendo nota");
+
+                NoteManager.Instance.OpenNote(nota.noteText);
+            }
         }
     }
 

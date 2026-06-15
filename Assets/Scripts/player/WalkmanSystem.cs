@@ -61,7 +61,11 @@ public class WalkmanSystem : MonoBehaviour
         //detecta constante para mostrar el texto en pantalla
         ChequearMirada();
 
-        
+        if (NoteManager.Instance != null && NoteManager.Instance.IsNoteOpen())
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             IntentarRecoger();
