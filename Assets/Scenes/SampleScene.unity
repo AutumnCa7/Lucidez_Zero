@@ -33325,7 +33325,7 @@ Transform:
   m_GameObject: {fileID: 974283823}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.68346, y: -6.3190503, z: -17.34185}
+  m_LocalPosition: {x: 21.27, y: -6.3190503, z: -8.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33363,8 +33363,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 11.383022, y: 2.175376, z: 13.220582}
-  m_Center: {x: -1.4799175, y: 0.58768797, z: -2.757691}
+  m_Size: {x: 9.683859, y: 2.175376, z: 4.389705}
+  m_Center: {x: -1.7261896, y: 0.58768797, z: -3.3579524}
 --- !u!33 &974283827
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -42311,7 +42311,7 @@ Transform:
   m_GameObject: {fileID: 1113843292}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00000003774895, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0040003564, y: 0.021999583, z: -0.0020000476}
+  m_LocalPosition: {x: -0.004, y: 0.038, z: -0.002}
   m_LocalScale: {x: 0.09610143, y: 0.050000004, z: 0.06526074}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -42364,7 +42364,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6357950d3cb23f7429fbf76b27c1ab73, type: 2}
+  - {fileID: 2100000, guid: b87c4d8f97a684b489c1410a0d68aa44, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -46309,7 +46309,7 @@ Transform:
   m_GameObject: {fileID: 1253733028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 43.66335, y: -8.906, z: -69.1231}
+  m_LocalPosition: {x: 43.66335, y: -8.906, z: -44.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55766,7 +55766,8 @@ PrefabInstance:
       propertyPath: 'flashlightDropPoints.Array.data[2]'
       value: 
       objectReference: {fileID: 427971108}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9222807696505736746, guid: 8b2b806d574c86e478378fa90e5cd949, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3416497559399086173, guid: 8b2b806d574c86e478378fa90e5cd949, type: 3}
