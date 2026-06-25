@@ -10,7 +10,7 @@ public class WalkmanSystem : MonoBehaviour
     [SerializeField] private BatteryManager batteryManager;
 
     [Header("Interacción")]
-    [SerializeField] private float distanciaRecojo = 10f;
+    [SerializeField] private float distanciaRecojo = 1.5f; //no es el problema
     [SerializeField] private LayerMask capaItems;
 
     [Header("Batería de Supervivencia")]
