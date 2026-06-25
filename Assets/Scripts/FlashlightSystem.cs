@@ -4,13 +4,18 @@ using UnityEngine;
 public class FlashlightSystem : MonoBehaviour
 {
     [Header("Referencias")]
-    [SerializeField] private Camera camaraJugador; 
-    [SerializeField] private GameObject linternaEnMano; 
+    [SerializeField] private Camera camaraJugador;
+    [SerializeField] private GameObject linternaEnMano;
     [SerializeField] private Light luzLinterna;
     [SerializeField] private BatteryManager batteryManager;
-    
+
+    [Header("Sonidos de Linterna")]
+    [SerializeField] private AudioSource audioLinterna; // Arrastra aquí el AudioSource
+    [SerializeField] private AudioClip sonidoEncender;  // Sonido "Click" de prender
+    [SerializeField] private AudioClip sonidoApagar;    // Sonido "Click" de apagar
+
     [Header("Interacción")]
-    [SerializeField] private float distanciaRecojo = 10f; 
+    [SerializeField] private float distanciaRecojo = 10f;
     [SerializeField] private LayerMask capaItems;
 
     [Header("Batería de Supervivencia")]
@@ -39,6 +44,11 @@ public class FlashlightSystem : MonoBehaviour
 
     void Update()
     {
+        if (NoteManager.Instance != null && NoteManager.Instance.IsNoteOpen())
+        {
+            return;
+        }
+
         if (camaraJugador == null) return;
 
         // --- LÓGICA DE CONSUMO: Solo gasta si la tienes Y está prendida ---
@@ -62,7 +72,7 @@ public class FlashlightSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E)) IntentarRecoger();
         if (tieneLinterna && Input.GetKeyDown(KeyCode.F)) AlternarLuz();
         RecargarInput();
-        
+
         Debug.DrawRay(camaraJugador.transform.position, camaraJugador.transform.forward * distanciaRecojo, Color.yellow);
     }
 
@@ -86,7 +96,14 @@ public class FlashlightSystem : MonoBehaviour
         {
             estaPrendida = !estaPrendida;
             luzLinterna.enabled = estaPrendida;
-            
+
+            // --- SONIDO AL PRENDER/APAGAR MANUALMENTE ---
+            if (audioLinterna != null)
+            {
+                if (estaPrendida && sonidoEncender != null) audioLinterna.PlayOneShot(sonidoEncender);
+                else if (!estaPrendida && sonidoApagar != null) audioLinterna.PlayOneShot(sonidoApagar);
+            }
+
             // Si la apagamos, restauramos la intensidad original por si estaba parpadeando
             if (!estaPrendida) luzLinterna.intensity = intensidadOriginal;
         }
@@ -96,6 +113,13 @@ public class FlashlightSystem : MonoBehaviour
     {
         estaPrendida = false;
         if (luzLinterna != null) luzLinterna.enabled = false;
+
+        // --- SONIDO AL APAGARSE POR FALTA DE BATERÍA ---
+        if (audioLinterna != null && sonidoApagar != null)
+        {
+            audioLinterna.PlayOneShot(sonidoApagar);
+        }
+
         Debug.Log("La batería se ha agotado. Presionar F no hará nada hasta recargar.");
     }
 
@@ -108,15 +132,21 @@ public class FlashlightSystem : MonoBehaviour
             {
                 tieneLinterna = true;
                 linternaEnMano.SetActive(true);
-               
+
                 OnFlashlightObtained?.Invoke(true);
 
                 Destroy(hit.collider.gameObject);
-                
+
                 // --- AUTO-ENCENDIDO AL RECOGER ---
                 estaPrendida = true;
                 if (luzLinterna != null) luzLinterna.enabled = true;
-                
+
+                // --- SONIDO AL RECOGER Y AUTO-ENCENDERSE ---
+                if (audioLinterna != null && sonidoEncender != null)
+                {
+                    audioLinterna.PlayOneShot(sonidoEncender);
+                }
+
                 Debug.Log("Linterna recogida y encendida. Gastando batería...");
             }
             else if (hit.collider.CompareTag("Item_Bateria"))
@@ -128,24 +158,22 @@ public class FlashlightSystem : MonoBehaviour
         }
     }
 
-    public void Recargar(float amount)//amount=recargarPorPila
+    public void Recargar(float amount)
     {
         bateriaActual += amount;
         if (bateriaActual > bateriaMaxima) bateriaActual = bateriaMaxima;
 
         OnFlashlightBatteryUpdated?.Invoke(bateriaActual, bateriaMaxima);
 
-        
         Debug.Log("Recarga exitosa. Batería al " + bateriaActual + "%");
     }
+
     private void RecargarInput()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-
             if (bateriaActual < bateriaMaxima && batteryManager.ConsumeBattery())
             {
-
                 Recargar(recargaPorPila);
             }
         }

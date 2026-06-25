@@ -9,12 +9,14 @@ public class MomAI : MonoBehaviour
 
     private Transform playerTransform;
     private NavMeshAgent agent;
+    private Animator anim; 
 
     [Header("Setting")]
     public float velocityRun = 8f;
     public float distanceAttack = 1.5f;
     public float timePunch = 1.0f;
     bool canAttack = true;
+    public float dañoCordura = 25f;
 
     [Header("Audio Setting")]
     public AudioSource audioSource;
@@ -25,11 +27,16 @@ public class MomAI : MonoBehaviour
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>(); 
         agent.enabled = false;
 
-        
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null) playerTransform = player.transform;
+    }
+    void Start()
+    {
+
+        WakeUpMom();
     }
 
     public void WakeUpMom()
@@ -40,7 +47,6 @@ public class MomAI : MonoBehaviour
             stateCurrent = StateMom.Cry;
             Debug.Log("Mom esta llorando");
 
-            // el llanto en loop
             if (audioSource != null && clipCry != null)
             {
                 audioSource.clip = clipCry;
@@ -61,6 +67,8 @@ public class MomAI : MonoBehaviour
             case StateMom.Cry:
                 agent.isStopped = true;
                 break;
+
+              
 
             case StateMom.Chase:
                 agent.isStopped = false;
@@ -84,14 +92,15 @@ public class MomAI : MonoBehaviour
     {
         while (stateCurrent == StateMom.Cry)
         {
-            
-            if (Vector3.Distance(transform.position, playerTransform.position) < 10f)
+            if (Vector3.Distance(transform.position, playerTransform.position) < 70f)
             {
                 FindFirstObjectByType<DynamicAudioController>().TriggerFinalBattleAudio();
                 stateCurrent = StateMom.Chase;
-                Debug.Log("�Te ve y empieza a correr!");
+                Debug.Log("�Te ve y empieza a correr!");
 
-                // Cortamos el llanto y dispara el grito de susto
+                
+                if (anim != null) anim.SetTrigger("Chase");
+
                 if (audioSource != null && clipScream != null)
                 {
                     audioSource.Stop();
@@ -106,21 +115,37 @@ public class MomAI : MonoBehaviour
     IEnumerator Hit()
     {
         canAttack = false;
-        Debug.Log("�Te golpeo!");
+        Debug.Log("¡Te golpeo!");
 
-        // Reproduce sonido de ataque
+        if (anim != null) anim.SetTrigger("Attack");
+
         if (audioSource != null && clipAttack != null)
         {
             audioSource.PlayOneShot(clipAttack);
         }
 
-        // ACA SE PONE EL CODIGO PARA SACAR VIDA AL PLAYER STEF
+        // ---> CÓDIGO PARA SACAR CORDURA AL PLAYER <---
+        // Busca el Manager de cordura en cualquier parte de la escena
+        SanitySystem corduraPlayer = FindFirstObjectByType<SanitySystem>();
+            
+        if (corduraPlayer != null)
+        {
+            // Le pasamos el daño en NEGATIVO porque ModifySanity suma el valor
+            corduraPlayer.ModifySanity(-dañoCordura);
+            Debug.Log("¡La Mom te quitó cordura!");
+        }
+        else
+        {
+            Debug.LogWarning("¡No se encontró el SanitySystem en la escena!");
+        }
 
         yield return new WaitForSeconds(timePunch);
 
         if (Vector3.Distance(transform.position, playerTransform.position) > distanceAttack)
         {
             stateCurrent = StateMom.Chase;
+            
+            if (anim != null) anim.SetTrigger("Chase");
         }
         canAttack = true;
     }

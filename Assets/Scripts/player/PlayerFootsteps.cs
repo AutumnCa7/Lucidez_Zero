@@ -46,7 +46,7 @@ public class PlayerFootsteps : MonoBehaviour
             audioSource.pitch = Random.Range(0.4f, 0.6f);
 
             //Modificar  el Volumen para realismo
-            audioSource.volume = Random.Range(0.3f, 0.4f);
+            audioSource.volume = Random.Range(0.2f, 0.4f);
 
             
             audioSource.PlayOneShot(footstepClips[randomIndex]);
