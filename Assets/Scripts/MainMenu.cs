@@ -5,7 +5,12 @@ public class MainMenu : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Intro Cinematic");
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }   
 }
 
