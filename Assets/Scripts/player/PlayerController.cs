@@ -33,8 +33,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask capaNotas;
 
     [Header("Efecto de Desmayo / Cabeza Pesada")]
-    [SerializeField] private float velocidadCaidaCabeza = 1.5f; // Qué tan rápido cabecea
-    [SerializeField] private float anguloMaximoMareo = 15f; // Grados de inclinación hacia el hombro
+    [SerializeField] private float velocidadCaidaCabeza = 1.5f; 
+    [SerializeField] private float anguloMaximoMareo = 15f; 
     private float inclinacionActualZ = 0f;
 
 
@@ -46,17 +46,16 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1f;
-
         rb = GetComponent<Rigidbody>();
-
         sanitySystem.OnSanityReduced += GameOver;
-
         ActivarControles();
     }
 
-
     void Update()
     {
+        // 1. SI NO PUEDE CONTROLAR (PAUSA/GAME OVER), SE DETIENE TODO EL UPDATE INMEDIATAMENTE
+        if (!puedeControlar) return;
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (NoteManager.Instance != null && NoteManager.Instance.IsNoteOpen())
@@ -73,9 +72,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-
-        if (!puedeControlar) return;
-
+        // Inputs de movimiento
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         isRunning = Input.GetKey(KeyCode.LeftShift);
@@ -87,27 +84,27 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
+        // Rotación de cámara
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        // --- CÁLCULO DE CAÍDA DE CABEZA ---
         CalcularInclinacionCabeza();
 
-        // Aplicamos la rotación normal del mouse + la inclinación Z del mareo
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, inclinacionActualZ);
         transform.Rotate(Vector3.up * mouseX);
     }
 
     void FixedUpdate()
     {
+        if (!puedeControlar) return; // Evita que las físicas calculen movimiento en pausa
+
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
         Vector3 targetVelocity = transform.TransformDirection(new Vector3(horizontalInput, 0f, verticalInput).normalized * currentSpeed);
         rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
     }
-
 
     void GameOver()
     {
@@ -115,17 +112,17 @@ public class PlayerController : MonoBehaviour
         DesactivarControles();
         gameUI.MostrarGameOver();
     }
+
     void OnDestroy()
     {
-        sanitySystem.OnSanityReduced -= GameOver;
+        if (sanitySystem != null)
+            sanitySystem.OnSanityReduced -= GameOver;
     }
-
 
     private void CalcularInclinacionCabeza()
     {
         float porcentajeLocura = 1f - (sanitySystem.CorduraActual / sanitySystem.CorduraMaxima);
 
-        // Si la locura pasa de la mitad, empieza a caer la cabeza
         if (porcentajeLocura > 0.5f)
         {
             float intensidad = (porcentajeLocura - 0.5f) * 2f;
@@ -148,13 +145,11 @@ public class PlayerController : MonoBehaviour
             distanciaInteraccion,
             capaNotas))
         {
-            NoteInteractable nota =
-                hit.collider.GetComponent<NoteInteractable>();
+            NoteInteractable nota = hit.collider.GetComponent<NoteInteractable>();
 
             if (nota != null)
             {
                 Debug.Log("Leyendo nota");
-
                 NoteManager.Instance.OpenNote(nota.noteText);
             }
         }
@@ -175,10 +170,10 @@ public class PlayerController : MonoBehaviour
             sanitySystem.SetZonaSegura(false);
         }
     }
+
     public void ActivarControles()
     {
         puedeControlar = true;
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -186,6 +181,15 @@ public class PlayerController : MonoBehaviour
     public void DesactivarControles()
     {
         puedeControlar = false;
+
+        // Limpiamos fuerzas e inputs pendientes para evitar "ghost walking"
+        horizontalInput = 0f;
+        verticalInput = 0f;
+        isRunning = false;
+        if (rb != null) 
+        {
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+        }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

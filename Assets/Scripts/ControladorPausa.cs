@@ -5,26 +5,27 @@ public class ControladorPausa : MonoBehaviour
 {
     [Header("Referencias de UI")]
     [SerializeField] private GameObject menuPausaUI;
-    [SerializeField] private GameObject guiaJuegoUI; // <- NUEVA: Arrastra aquí el panel de la guía
+    [SerializeField] private GameObject guiaJuegoUI;
+
+    [Header("Referencias de Componentes")]
+    // Cambiado a [SerializeField] para que lo puedas arrastrar en el Inspector
+    [SerializeField] private PlayerController playerController; 
 
     private bool juegoPausado = false;
-    private bool guiaAbierta = false; // <- NUEVA: Controla si estamos viendo la guía
+    private bool guiaAbierta = false;
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // Si la guía está abierta, Escape la cierra y vuelve al menú de pausa
             if (guiaAbierta)
             {
                 OcultarGuia();
             }
-            // Si el juego ya está pausado (pero la guía no está abierta), reanuda el juego
             else if (juegoPausado)
             {
                 Reanudar();
             }
-            // Si el juego corre normal, lo pausa
             else
             {
                 Pausar();
@@ -35,10 +36,15 @@ public class ControladorPausa : MonoBehaviour
     public void Reanudar()
     {
         menuPausaUI.SetActive(false);
-        guiaJuegoUI.SetActive(false); // Nos aseguramos de cerrar la guía también
+        guiaJuegoUI.SetActive(false);
         Time.timeScale = 1f;
         juegoPausado = false;
         guiaAbierta = false;
+
+        if (playerController != null) 
+            playerController.ActivarControles();
+        else
+            Debug.LogError("¡Falta asignar el PlayerController en el ControladorPausa!");
     }
 
     public void Pausar()
@@ -46,27 +52,26 @@ public class ControladorPausa : MonoBehaviour
         menuPausaUI.SetActive(true);
         Time.timeScale = 0f;
         juegoPausado = true;
-    }
 
-    // ==========================================
-    // NUEVOS MÉTODOS PARA LA GUÍA DE JUEGO
-    // ==========================================
+        if (playerController != null) 
+            playerController.DesactivarControles();
+        else
+            Debug.LogError("¡Falta asignar el PlayerController en el ControladorPausa!");
+    }
 
     public void MostrarGuia()
     {
-        menuPausaUI.SetActive(false); // Oculta los botones principales de pausa
-        guiaJuegoUI.SetActive(true);   // Muestra la pantalla con la imagen de la guía
+        menuPausaUI.SetActive(false);
+        guiaJuegoUI.SetActive(true);
         guiaAbierta = true;
     }
 
     public void OcultarGuia()
     {
-        guiaJuegoUI.SetActive(false);  // Oculta la guía
-        menuPausaUI.SetActive(true);   // Reaparece el menú de pausa principal
+        guiaJuegoUI.SetActive(false);
+        menuPausaUI.SetActive(true);
         guiaAbierta = false;
     }
-
-    // ==========================================
 
     public void IrAlMenuPrincipal(string nombreEscena)
     {
