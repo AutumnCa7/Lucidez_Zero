@@ -24,14 +24,18 @@ public class ControladorTele : MonoBehaviour
 
     public void AlternarTelevisor()
     {
+        Debug.Log("alternar llamada");
+
         if (!estaEncendida)
         {
+            Debug.Log("encender");
             if (objetoPantalla != null) objetoPantalla.SetActive(true);
             if (reproductorVideo != null) reproductorVideo.Play();
             if (luzDeLaTele != null) luzDeLaTele.enabled = true;
 
             if (imagenJumpscare != null)
             {
+                
                 StartCoroutine(RutinaJumpscare());
             }
 
