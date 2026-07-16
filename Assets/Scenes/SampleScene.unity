@@ -13387,7 +13387,7 @@ MonoBehaviour:
   audioLinterna: {fileID: 4602662286868373042}
   sonidoEncender: {fileID: 8300000, guid: d251aaf8f5acb3448b8a2a13803c210b, type: 3}
   sonidoApagar: {fileID: 8300000, guid: d251aaf8f5acb3448b8a2a13803c210b, type: 3}
-  distanciaRecojo: 20
+  distanciaRecojo: 4
   capaItems:
     serializedVersion: 2
     m_Bits: 64
@@ -85654,7 +85654,7 @@ MonoBehaviour:
   clipEncender: {fileID: 8300000, guid: d251aaf8f5acb3448b8a2a13803c210b, type: 3}
   clipApagar: {fileID: 8300000, guid: 2b6b62da975616545babf70750633dc1, type: 3}
   textoRecogerUI: {fileID: 1877517142}
-  distanciaRecojo: 10
+  distanciaRecojo: 3
   capaItems:
     serializedVersion: 2
     m_Bits: 64
