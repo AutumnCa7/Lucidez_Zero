@@ -1035,7 +1035,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MomAI
   stateCurrent: 0
-  velocityRun: 15
+  velocityRun: 8
   distanceAttack: 3
   timePunch: 1
   "da\xF1oCordura": 12
